@@ -7,9 +7,9 @@ public class dataModule {
 	private String desc;
 
 
-//	public dataModule() {
-//
-//	}
+	public dataModule() {
+
+	}
 
 	public dataModule(String id, String name, String desc) {
 		super();
