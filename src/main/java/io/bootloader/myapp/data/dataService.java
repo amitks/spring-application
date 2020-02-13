@@ -1,57 +1,45 @@
 package io.bootloader.myapp.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class dataService {
 
-	private List<dataModule> user_data = new ArrayList<dataModule>(Arrays.asList(
-		new dataModule("100", "john", "manager"),
-		new dataModule("101", "sam", "director"),
-		new dataModule("102", "matt", "engineer")
-		));
+	@Autowired
+	private dataRepository data_repository;
 
-	public List<dataModule> get_data(){
+	public List<dataModel> get_data(){
+		List<dataModel> user_data = new ArrayList<>(); 
+		data_repository.findAll().forEach(user_data::add);
 		return user_data;
 	}
 
-	public dataModule get_data_id(String id) {
-		for (int i=0 ; i < user_data.size(); i++ ) {
-			dataModule data = user_data.get(i);
-			if (data.getId().equals(id))
-				return data;
-		}
-		return new dataModule();
+	public dataModel get_data_id(String id) {
+		return data_repository.findOne(id);
 	}
 
-	public void add_data(dataModule data) {
-		user_data.add(data);
+	public void add_data(dataModel data) {
+		data_repository.save(data);
 	}
 
 	public void delete_data(String id) {
-		for (int i=0; i < user_data.size(); i++) {
-			dataModule data = user_data.get(i);
-			if (data.getId().equals(id)) {
-				user_data.remove(i);
-				return;
-			}
-		}
-		return;
+		data_repository.deleteById(id);
 	}
 
-	public void update_data(String id, dataModule new_data) {
-		for (int i=0; i < user_data.size(); i++) {
-			dataModule data = user_data.get(i);
-			if (data.getId().equals(id)) {
-				user_data.set(i, new_data);
-				return;
-			}
-		}
-		return;
+	public void update_data(String id, dataModel new_data) {
+//		for (int i=0; i < user_data.size(); i++) {
+//			dataModel data = user_data.get(i);
+//			if (data.getId().equals(id)) {
+//				user_data.set(i, new_data);
+//				return;
+//			}
+//		}
+//		return;
+		data_repository.save(new_data);
 	}
 
 }
